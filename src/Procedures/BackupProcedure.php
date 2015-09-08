@@ -43,12 +43,14 @@ class BackupProcedure extends Procedure {
         $workingFile = $compressor->getCompressedPath($workingFile);
 
         // upload the archive
+        if ($database!='mongodb')
         $sequence->add(new Tasks\Storage\TransferFile(
             $localFilesystem, basename($workingFile),
             $this->filesystems->get($destination), $compressor->getCompressedPath($destinationPath)
         ));
 
         // cleanup the local archive
+        if ($database!='mongodb')
         $sequence->add(new Tasks\Storage\DeleteFile(
             $localFilesystem,
             basename($workingFile)
